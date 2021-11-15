@@ -880,9 +880,9 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
 **接口名称：**BID可信解析接口(GET方法)
 
-**接口说明：**根据BID解析BID内容
+**接口说明**：根据BID解析BID内容
 
-**接口地址：**[http://\${url}/\${bid}?verify=true](http://\${url}/\${bid}?verify=true)，url为解析服务的地址，bid为要解析的BID
+**接口地址**：[http://\${url}/\${bid}?verify=true](http://\${url}/\${bid}?verify=true)，url为解析服务的地址，bid为要解析的BID
 
 **成功返回参数：**
 

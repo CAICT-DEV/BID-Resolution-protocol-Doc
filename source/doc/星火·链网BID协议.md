@@ -21,7 +21,6 @@
   suffix = (22,42)(ALPHA / DIGIT);长度范围22-42的字母或数字组合 
 ```
 
-
 ##     2.2 架构
 
 <img src="../_static/images/图片2.png" style="zoom: 50%;" />
@@ -297,13 +296,9 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 				"type": 206
 			},
 			"service": [{
-				"id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#subResolve",
-				"type": "DIDSubResolve",
-				"version": "1.0.0",
-				"serverType": 1,
-				"protocol": 3,
-				"serviceEndpoint": "192.168.1.23",
-				"port": 8080
+				  "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#storage",
+                  "type": "DIDStorage",
+                  "serviceEndpoint": "https://did.bif.com"
 			}],
 			"created": "2021-05-10T06:23:38Z",
 			"updated": "2021-05-10T06:23:38Z",
@@ -394,7 +389,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 				"https://www.w3.org/ns/did/v1"
 			],
 			"version": "1.0.0",
-			"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+			"id": "did:bid:1234",
 			"publicKey": [{
 				"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
 				"type": "Ed25519",
@@ -416,7 +411,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 				"type": 206
 			},
 			"service": [{
-				"id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#subResolve",
+				"id": "did:bid:1234#subResolve",
 				"type": "DIDSubResolve",
 				"version": "1.0.0",
 				"serverType": 1,
@@ -425,7 +420,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 				"port": 8080
 			}],
 			"proof": {
-				"creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
+				"creator": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
 				"signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
 			}
 		}
@@ -814,9 +809,9 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
     "message": "success",
     "data": {
         "version": "1.0.0",
-        "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+        "id": "did:bid:1234",
         "service": {
-            "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#subresolve",
+            "id": "did:bid:1234#subresolve",
             "type": "DIDSubResolve",
             "version": "1.0.0",
             "serverType": 1,

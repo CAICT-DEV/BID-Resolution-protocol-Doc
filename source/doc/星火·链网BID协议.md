@@ -74,30 +74,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
    （4）type: 必填字段。BID文档的属性类型，取值见附录**属性类型**。
 
-   （5）attributes: 必填字段。一组属性，根据文档属性类型不同attributes有不同的字段。
-
-　　　&emsp;&emsp;a.）当type为凭证类型时，属性为可验证声明，结构如下：
-
-| 字段名            | 描述                     |                                                              |
-| ----------------- | ------------------------ | ------------------------------------------------------------ |
-| issuer            | 必填。发证者BID          |                                                              |
-| issuanceDate      | 必填。发证日期           |                                                              |
-| effectiveDate     | 必填。生效日期           |                                                              |
-| expirationDate    | 必填。失效日期           |                                                              |
-| revocationId      | 必填。凭证吊销服务地址ID |                                                              |
-| templateId        | 必填。凭证模板ID         |                                                              |
-| credentialSubject | 字段名                   | 描述                                                         |
-|                   | 必填。id                 | 凭证拥有者的BID                                              |
-|                   | 必填。type               | 凭证类型(数字)。详见附录**凭证类型**                         |
-|                   | 选填。name               | 被颁发者机构名称                                             |
-|                   | 选填。description        | 描述                                                         |
-|                   | 选填。content            | 凭证的具体内容，根据模板进行解析                             |
-| proof             | 一组签名                 |                                                              |
-|                   | 字段                     | 描述                                                         |
-|                   | 选填。creator            | proof的创建者，这里是一个公钥的id                            |
-|                   | 选填。signatureValue     | 使用相应私钥对attribute内容的签名，其中签名内容为对凭证字段的字符串组合进行签名，格式参考[5章节](#_5.2 签名规则)。 |
-
-　　　&emsp;&emsp;b.）当type为其他属性类型时，属性为如下结构：
+   （5）attributes: 必填字段。一组属性，属性为如下结构：
 
 | 字段名  | 描述                                        |
 | ------- | ------------------------------------------- |
@@ -109,7 +86,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
    （6）acsns:选填字段。一组子链AC号，只有BID文档类型不是凭证类型且文档是主链上的BID文档才可能有该字段，存放当前BID拥有的所有AC号。
     
-   （7）verifiableCredentials:选填字段。凭证列表，包含id和type两个字段。只有BID文档类型不是凭证类型才可能有该字段。
+   （7）verifiableCredentials:选填字段。凭证列表，包含id和type两个字段。
 
 　　　&emsp;&emsp;a.）id: 可验证声明的BID。　
 
@@ -152,15 +129,13 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
 ### 4.1.1 主链解析架构
 
-​        主链支持解析主链BID文档、子链解析服务地址两类数据。解析主链BID文档分为解析主链普通属性BID文档和解析凭证属性BID文档。解析子链解析服务地址又分为根据带AC号的BID解析子链的解析服务地址和根据子链解析服务BID解析子链的解析服务地址。
+​        主链支持解析主链BID文档、子链解析服务地址两类数据。解析主链BID文档主要为解析主链普通属性BID文。解析子链解析服务地址又分为根据带AC号的BID解析子链的解析服务地址和根据子链解析服务BID解析子链的解析服务地址。
 
 1. 解析主链普通属性BID文档
 
    <img src="../_static/images/图片4.png" style="zoom: 67%;" />
 
-2. 解析主链凭证属性BID文档
-
-   <img src="../_static/images/图片5.png"  />
+   
 
 3. 根据带AC号的BID解析子链解析服务地址
 
@@ -228,26 +203,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 | data.didDocument.proof.creator                         | String        | 签名公钥id                                            |
 | data.didDocument.proof.signatureValue                  | String        | 签名的base58编码                                      |
 
-当文档属性为凭证类型时，attributes结构如下：
-
-| 字段名                                                              | 类型          | 说明                               |
-|---------------------------------------------------------------------|---------------|------------------------------------|
-| data.didDocument.extension.attributes.issuer                        | String        | 发证者BID                          |
-| data.didDocument.extension.attributes.issuanceDate                  | String        | 发证日期                           |
-| data.didDocument.extension.attributes.effectiveDate                 | String        | 生效日期                           |
-| data.didDocument.extension.attributes.expirationDate                | String        | 失效日期                           |
-| data.didDocument.extension.attributes.revocationId                  | String        | 凭证吊销服务地址ID                 |
-| data.didDocument.extension.attributes.credentialSubject             | Object        | 凭证主体                           |
-| data.didDocument.extension.attributes.credentialSubject.id          | String        | 凭证拥有者的BID                    |
-| data.didDocument.extension.attributes.credentialSubject.type        | int           | 凭证类型                           |
-| data.didDocument.extension.attributes.credentialSubject.name        | String        | 被颁发者机构名称                   |
-| data.didDocument.extension.attributes.credentialSubject.description | String        | 描述                               |
-| data.didDocument.extension.attributes.content                       | Object        | 凭证的具体内容，根据模板进行解析   |
-| data.didDocument.extension.attributes.proof                         | Array(Object) | 签名证明                           |
-| data.didDocument.extension.attributes.proof.creator                 | String        | proof的创建者，这里是一个公钥的id  |
-| data.didDocument.extension.attributes.proof.signatureValue          | String        | 使用相应私钥对凭证内容的签名       |
-
-当文档属性为其他类型时，attributes结构如下：
+其中attributes结构如下：
 
 | 字段名                                        | 类型   | 说明                                  |
 |-----------------------------------------------|--------|---------------------------------------|
@@ -273,158 +229,98 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
 ```json
 {
-	"errorCode": 0,
-	"data": {
-		"didDocument": {
-			"@context": ["https://www.w3.org/ns/did/v1"],
-			"version": "1.0.0",
-			"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-			"publicKey": [{
-				"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
-				"type": "Ed25519",
-				"controller": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-				"publicKeyHex": "b9906e1b50e81501369cc777979f8bcf27bd1917d794fa6d5e320b1ccc4f48bb"
-			}],
-			"authentication": ["did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1"],
-			"extension": {
-				"recovery": ["did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"],
-				"ttl": 86400,
-				"delegateSign ": {
-					"signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-					"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-				},
-				"type": 206
-			},
-			"service": [{
-				  "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#storage",
-                  "type": "DIDStorage",
-                  "serviceEndpoint": "https://did.bif.com"
-			}],
-			"created": "2021-05-10T06:23:38Z",
-			"updated": "2021-05-10T06:23:38Z",
-			"proof": {
-				"creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-				"signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
-			}
-		}
-	},
-	"message": "success"
+    "errorCode": 0,
+    "data": {
+        "didDocument": {
+            "@context": ["https://www.w3.org/ns/did/v1"],
+            "version": "1.0.0",
+            "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+            "publicKey": [{
+                "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
+                "type": "Ed25519",
+                "controller": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+                "publicKeyHex": "b9906e1b50e81501369cc777979f8bcf27bd1917d794fa6d5e320b1ccc4f48bb"
+            }],
+            "authentication": ["did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1"],
+            "extension": {
+                "recovery": ["did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"],
+                "ttl": 86400,
+                "delegateSign ": {
+                    "signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
+                    "signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
+                },
+                "type": 206
+            },
+            "service": [{
+                "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#resolve",
+                "type": "DIDResolver",
+                 "serviceEndpoint": "www.caict.cn",
+            }],
+           "created": "2021-05-10T06:23:38Z",
+           "updated": "2021-05-10T06:23:38Z",
+            "proof": {
+                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
+                "signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
+            }
+        }
+    },
+    "message": "success"
 }
 ```
 
-2.成功返回凭证属性BID文档示例：
+
+
+2.成功返回包含子链解析服务地址的BID文档示例：
 
 ```json
 {
-	"errorCode": 0,
-	"message": "success",
-	"data": {
-		"didDocument": {
-			"@context": [
-				"https://www.w3.org/ns/did/v1"
-			],
-			"version": "1.0.0",
-			"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-			"publicKey": [{
-				"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
-				"type": "Ed25519",
-				"controller": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-				"publicKeyHex": "b9906e1b50e81501369cc777979f8bcf27bd1917d794fa6d5e320b1ccc4f48bb"
-			}],
-			"authentication": [
-				"did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1"
-			],
-			"extension": {
-				"recovery": [
-					"did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"
-				],
-				"ttl": 86400,
-				"delegateSign ": {
-					"signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-					"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-				},
-				"type": 205,
-				"attributes": [{
-					"issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-					"issuanceDate": "2021-01-20T12:01:20Z",
-					"effectiveDate": "2021-01-20T12:01:20Z",
-					"expirationDate": "2021-04-02T12:01:20Z",
-					"revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation",
-					"credentialSubject": {
-						"id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-						"type": 202,
-						"name": "北京大学",
-						"content": {}
-					},
-					"proof": [{
-						"creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-
-						"signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
-					}]
-				}]
-			},
-			"service": [{
-				"id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#revocation",
-				"type": " DIDRevocation",
-				"serviceEndpoint": "https://did.bif.com"
-			}],
-			"proof": {
-				"creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-				"signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-			}
-		}
-	}
-}
-```
-
-3.成功返回包含子链解析服务地址的BID文档示例：
-
-```json
-{
-	"errorCode": 0,
-	"message": "success",
-	"data": {
-		"didDocument": {
-			"@context": [
-				"https://www.w3.org/ns/did/v1"
-			],
-			"version": "1.0.0",
-			"id": "did:bid:1234",
-			"publicKey": [{
-				"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
-				"type": "Ed25519",
-				"controller": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-				"publicKeyHex": "b9906e1b50e81501369cc777979f8bcf27bd1917d794fa6d5e320b1ccc4f48bb"
-			}],
-			"authentication": [
-				"did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1"
-			],
-			"extension": {
-				"recovery": [
-					"did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"
-				],
-				"ttl": 86400,
-				"delegateSign ": {
-					"signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-					"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-				},
-				"type": 206
-			},
-			"service": [{
-				"id": "did:bid:1234#subResolve",
-				"type": "DIDSubResolve",
-				"version": "1.0.0",
-				"serverType": 1,
-				"protocol": 3,
-				"serviceEndpoint": "192.168.1.23",
-				"port": 8080
-			}],
-			"proof": {
-				"creator": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
-				"signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-			}
-		}
-	}
+    "errorCode": 0,
+    "message": "success",
+    "data": {
+        "didDocument": {
+            "@context": [
+                "https://www.w3.org/ns/did/v1"
+            ],
+            "version": "1.0.0",
+            "id": "did:bid:1234",
+            "publicKey": [
+                {
+                    "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
+                    "type": "Ed25519",
+                    "controller": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+                    "publicKeyHex": "b9906e1b50e81501369cc777979f8bcf27bd1917d794fa6d5e320b1ccc4f48bb"
+                }
+            ],
+            "authentication": [
+                "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1"
+            ],
+            "extension": {
+                "recovery": [
+                    "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"
+                ],
+                "ttl": 86400,
+                "delegateSign ": {
+                    "signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
+                    "signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
+                },
+                "type": 206
+            },
+            "service": [
+                {
+                    "id": "did:bid:DIDResolver#subResolve",
+                    "type": "DIDSubResolve",
+                    "version": "1.0.0",
+                    "serverType": 1,
+                    "protocol": 3,
+                    "serviceEndpoint": "192.168.1.23",
+                    "port": 8080
+                }
+            ],
+            "proof": {
+                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",                "signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
+            }
+        }
+    }
 }
 ```
 
@@ -578,38 +474,6 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 | data..attributes | Array(Object) | 属性                             |
 
 **成功返回证书属性示例：**
-
-```json
-{
-	"errorCode": 0,
-	"message": "success",
-	"data": {
-		"version": "1.0.0",
-		"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-		"attributes": [{
-			"issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-			"issuanceDate": "2021-01-20T12:01:20Z",
-			"effectiveDate": "2021-01-20T12:01:20Z",
-			"expirationDate": "2021-04-02T12:01:20Z",
-			"revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation",
-			"credentialSubject": {
-				"id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-				"type": 202,
-				"name": "北京大学",
-				"description": "",
-				"context": {}
-			},
-			"proof": [{
-				"creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-
-				"signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
-			}]
-		}]
-	}
-}
-```
-
-**成功返回其他属性示例：**
 
 ```json
 {
@@ -843,8 +707,6 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
 ​       BID标识依托于星火链主子链架构，是一个层次化的模型，由主链和子链组成。BID解析时通过递归解析系统，先到主链解析有子链解析服务地址的BID文档，再到子链查询具体的BID文档。
 
-#### 4.2.3.1 递归解析
-
 递归解析为通过递归解析服务迭代查询BID文档的过程，解析接口和BID解析保持一致。
 
 <img src="../_static/images/图片9.png" style="zoom: 80%;" />
@@ -858,52 +720,6 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 4.  递归解析到子链解析`did:bid:1234:as3e5tg56hhy6`
 5.  子链解析服务返回`did:bid:1234:as3e5tg56hhy6`在子链解析服务上的BID文档
 6.  递归解析系统将解析结果返回给用户
-
-#### 4.2.3.2 可信解析
-
-​        可信解析主要是对BID文档的公钥和签名内容进行可信验证，遵循DPKI规范，在整个星火链网内存在多个为普通BID,文档publickKey签名认证的认证BID,保证数据来源的可靠性，确保递归解析过程中每个经过的解析服务都是可信的。BID递归解析系统需要实现此接口，在递归解析的过程中，确保中间解析服务地址没有被篡改。
-
-**1. 可信签名流程**
-
-<img src="../_static/images/图片10.png" style="zoom: 67%;" />
-
-**2. 可信解析流程**
-
-<img src="../_static/images/图片11.png" style="zoom: 67%;" />
-
-**3. 可信解析接口**
-
-**接口名称**：BID可信解析接口(GET方法)
-
-**接口说明**：根据BID解析BID内容
-
-**接口地址**：[http://\${url}/\${bid}?verify=true](http://\${url}/\${bid}?verify=true)，url为解析服务的地址，bid为要解析的BID
-
-**成功返回参数：**
-
-| 字段名       | 类型   | 说明                             |
-|--------------|--------|----------------------------------|
-| errorCode    | int    | 见响应码说明                     |
-| data         | Object | 解析结果                         |
-| data.version | String | BID解析协议的版本，本版本为1.0.0 |
-| data.verify  | Bool   | true                             |
-| …            |        | 其他字段同BID解析                |
-
-**失败返回参数：**
-
-| 字段名    | 类型   | 说明         |
-|-----------|--------|--------------|
-| errorCode | int    | 见响应码说明 |
-| message   | String | 失败原因     |
-
-**失败返回示例：**
-
-```json
-{
-	"errorCode": 6,
-	"message": "not found"
-}
-```
 
 ### 4.2.4 响应码说明
 
@@ -973,63 +789,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
 ## 5.4 示例
 
-### 5.4.1 凭证签名
-
-**源数据：**
-
-```json
-{
-	"issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-	"issuanceDate": "2021-01-20T12:01:20Z",
-	"effectiveDate": "2021-01-20T12:01:20Z",
-	"expirationDate": "2021-04-02T12:01:20Z",
-	"revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation",
-	"credentialSubject": {
-		"id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-		"type": 202,
-		"name": "asc",
-		"content": {
-			"registerCapital": "1000.0",
-			"status": "2"
-		}
-	},
-	"proof": [{
-		"creator": "did:bid:ef18F9AVK4SQLZPRrPkrVWwp9kbpdXHx#key-1",
-		"signatureValue": "4TWzvxXDgejyWK7syUeg68WFd6Kf5cGV8bnEYR35UaKX18VRwemnnBuuGkMHGrSP2qbDac9WwhTffLQhyzz2Vp5m"
-	}]
-}
-```
-
-#### 5.4.1.1 排序
-
-```json
-{
-	"credentialSubject": {
-		"content": {
-			"registerCapital": "1000.0",
-			"status": "2"
-		},
-		"id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-		"name": "asc",
-		"type": 202
-	},
-	"effectiveDate": "2021-01-20T12:01:20Z",
-	"expirationDate": "2021-04-02T12:01:20Z",
-	"issuanceDate": "2021-01-20T12:01:20Z",
-	"issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-	"revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation"
-}
-```
-
-#### 5.4.1.2 签名
-
-​        使用测试私钥priSPKp8oiiAXGZaXFBMKEAoL2b6J6UDQCw4x39ereXYtyAejM，运用Ed25519算法计算待签名字节数据(排序后的数据转为字节)并Base58编码。
-
-```
-4TWzvxXDgejyWK7syUeg68WFd6Kf5cGV8bnEYR35UaKX18VRwemnnBuuGkMHGrSP2qbDac9WwhTffLQhyzz2Vp5m
-```
-
-### 5.4.2 BID文档签名
+### 5.4.1 BID文档签名
 
 **源数据：**
 
@@ -1066,7 +826,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 }
 ```
 
-#### 5.4.2.1 排序
+#### 5.4.1.1 排序
 
 ```json
 {
@@ -1097,7 +857,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 }
 ```
 
-#### 5.4.2.2 签名
+#### 5.4.1.2 签名
 
 ​         使用测试私钥priSPKp8oiiAXGZaXFBMKEAoL2b6J6UDQCw4x39ereXYtyAejM，运用Ed2519算法计算待签名字节数据(排序后的数据转为字节)并Base58编码。
 

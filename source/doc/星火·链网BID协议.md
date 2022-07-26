@@ -714,14 +714,59 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 具体递归解析流程如下：
 
 1.  用户通过BID递归解析服务查询`did:bid:1234:as3e5tg56hhy6`
-
 2.  递归解析到主链解析`did:bid:1234:as3e5tg56hhy6`
 3.  主链内部解析did:bid:1234的BID文档，包含AC号为1234的子链的解析地址
 4.  递归解析到子链解析`did:bid:1234:as3e5tg56hhy6`
 5.  子链解析服务返回`did:bid:1234:as3e5tg56hhy6`在子链解析服务上的BID文档
 6.  递归解析系统将解析结果返回给用户
 
-### 4.2.4 响应码说明
+### 4.2.4 可信解析
+
+​        可信解析主要是对BID文档的公钥和签名内容进行可信验证，遵循DPKI规范，在整个星火链网内存在多个为普通BID,文档publickKey签名认证的认证BID,保证数据来源的可靠性，确保递归解析过程中每个经过的解析服务都是可信的。BID递归解析系统需要实现此接口，在递归解析的过程中，确保中间解析服务地址没有被篡改。
+
+**1. 可信签名流程**
+
+<img src="D:\gitHup\BID-Resolution-protocol-Doc\source\_static\images\图片10.png" style="zoom: 67%;" />
+
+**2. 可信解析流程**
+
+<img src="D:\gitHup\BID-Resolution-protocol-Doc\source\_static\images\图片11.png" style="zoom: 67%;" />
+
+**3. 可信解析接口**
+
+**接口名称**：BID可信解析接口(GET方法)
+
+**接口说明**：根据BID解析BID内容
+
+**接口地址**：[http://\${url}/\${bid}?verify=true](http://\${url}/\${bid}?verify=true)，url为解析服务的地址，bid为要解析的BID
+
+**成功返回参数：**
+
+| 字段名       | 类型   | 说明                             |
+| ------------ | ------ | -------------------------------- |
+| errorCode    | int    | 见响应码说明                     |
+| data         | Object | 解析结果                         |
+| data.version | String | BID解析协议的版本，本版本为1.0.0 |
+| data.verify  | Bool   | true                             |
+| …            |        | 其他字段同BID解析                |
+
+**失败返回参数：**
+
+| 字段名    | 类型   | 说明         |
+| --------- | ------ | ------------ |
+| errorCode | int    | 见响应码说明 |
+| message   | String | 失败原因     |
+
+**失败返回示例：**
+
+```json
+{
+	"errorCode": 6,
+	"message": "not found"
+}
+```
+
+### 4.2.5 响应码说明
 
 | 返回码                             | 返回码解释       |
 |------------------------------------|------------------|

@@ -784,7 +784,7 @@ Document的互操作，必须包含https://www.w3.org/ns/did/v1。
 
 ## 4.3 二进制解析协议
 
-本次只支持文本解析协议，二进制解析协议会在后续的版本中加入，敬请期待。
+[星火链网BID标识二进制解析协议规范](https://github.com/caict-4iot-dev/bif-rfcs/blob/main/RFCs/3-ACCEPTED/%E6%98%9F%E7%81%AB%E9%93%BE%E7%BD%91RFC-011%EF%BC%9A%E6%98%9F%E7%81%AB%E9%93%BE%E7%BD%91BID%E6%A0%87%E8%AF%86%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE.md)
 
 # 5. 签名算法
 
